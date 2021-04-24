@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Domain.Entities;
 
 namespace Player_API.Infrastructure.Persistence
 {
@@ -34,6 +35,7 @@ namespace Player_API.Infrastructure.Persistence
         public DbSet<TodoItem> TodoItems { get; set; }
 
         public DbSet<TodoList> TodoLists { get; set; }
+        public DbSet<Player> Players { get; set; }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

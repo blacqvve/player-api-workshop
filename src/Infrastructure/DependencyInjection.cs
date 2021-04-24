@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Infrastructure.Persistence;
 
 namespace Player_API.Infrastructure
 {
@@ -22,35 +23,38 @@ namespace Player_API.Infrastructure
             }
             else
             {
-                services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(
-                        configuration.GetConnectionString("DefaultConnection"),
-                        b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+                var conString =configuration.GetConnectionString("DefaultConnection");
+
+                services.AddDbContext<PlayerDbContext>(options =>
+                    options.UseMySql(
+                        conString,
+                        ServerVersion.AutoDetect(conString),
+                        b => b.MigrationsAssembly(typeof(PlayerDbContext).Assembly.FullName)));
             }
 
-            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<PlayerDbContext>());
 
             services.AddScoped<IDomainEventService, DomainEventService>();
 
-            services
-                .AddDefaultIdentity<ApplicationUser>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            // services
+            //     .AddDefaultIdentity<ApplicationUser>()
+            //     .AddRoles<IdentityRole>()
+            //     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+            // services.AddIdentityServer()
+            //     .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
             services.AddTransient<IDateTime, DateTimeService>();
-            services.AddTransient<IIdentityService, IdentityService>();
+            //services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<ICsvFileBuilder, CsvFileBuilder>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("CanPurge", policy => policy.RequireRole("Administrator"));
-            });
+            // services.AddAuthorization(options =>
+            // {
+            //     options.AddPolicy("CanPurge", policy => policy.RequireRole("Administrator"));
+            // });
 
             return services;
         }
