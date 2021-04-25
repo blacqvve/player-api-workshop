@@ -6,4 +6,8 @@
     <AssemblyName>Player_API.Domain</AssemblyName>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Events" />
+  </ItemGroup>
+
 </Project>

@@ -6,16 +6,13 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Player_API.Application.Common.Interfaces;
-using Player_API.Domain.Entities;
 
 namespace Infrastructure.Persistence
 {
     public class PlayerDbContext : DbContext,IApplicationDbContext
     {
         private readonly IDateTime _dateTime;
-
-        public DbSet<TodoList> TodoLists { get; set; }
-        public DbSet<TodoItem> TodoItems { get; set; }
+        
         public DbSet<Player> Players { get; set; }
 
         public PlayerDbContext(

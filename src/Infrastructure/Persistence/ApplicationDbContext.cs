@@ -1,6 +1,5 @@
 ﻿using Player_API.Application.Common.Interfaces;
 using Player_API.Domain.Common;
-using Player_API.Domain.Entities;
 using Player_API.Infrastructure.Identity;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
@@ -31,10 +30,7 @@ namespace Player_API.Infrastructure.Persistence
             _domainEventService = domainEventService;
             _dateTime = dateTime;
         }
-
-        public DbSet<TodoItem> TodoItems { get; set; }
-
-        public DbSet<TodoList> TodoLists { get; set; }
+        
         public DbSet<Player> Players { get; set; }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

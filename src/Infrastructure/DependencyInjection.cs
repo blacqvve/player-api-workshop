@@ -1,5 +1,4 @@
 ﻿using Player_API.Application.Common.Interfaces;
-using Player_API.Infrastructure.Files;
 using Player_API.Infrastructure.Identity;
 using Player_API.Infrastructure.Persistence;
 using Player_API.Infrastructure.Services;
@@ -46,7 +45,6 @@ namespace Player_API.Infrastructure
 
             services.AddTransient<IDateTime, DateTimeService>();
             //services.AddTransient<IIdentityService, IdentityService>();
-            services.AddTransient<ICsvFileBuilder, CsvFileBuilder>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
