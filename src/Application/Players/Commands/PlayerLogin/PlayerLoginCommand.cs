@@ -9,12 +9,12 @@ using Player_API.Application.Common.Interfaces;
 
 namespace Application.Players.Commands.PlayerLogin
 {
-    public class PlayerLoginCommand : IRequest
+    public class PlayerLoginCommand : IRequest<DateTime>
     {
         public Guid PlayerId { get; set; }
     }
 
-    public class PlayerLoginCommandHandler : IRequestHandler<PlayerLoginCommand>
+    public class PlayerLoginCommandHandler : IRequestHandler<PlayerLoginCommand,DateTime>
     {
         private readonly IApplicationDbContext _context;
         private readonly IDateTime _dateTime;
@@ -25,7 +25,7 @@ namespace Application.Players.Commands.PlayerLogin
             _context = context;
             _dateTime = dateTime;
         }
-        public async Task<Unit> Handle(PlayerLoginCommand request, CancellationToken cancellationToken)
+        public async Task<DateTime> Handle(PlayerLoginCommand request, CancellationToken cancellationToken)
         {
             var entity = _context.Players.FirstOrDefault(x => x.PlayerId == request.PlayerId);
 
@@ -38,7 +38,7 @@ namespace Application.Players.Commands.PlayerLogin
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
+            return entity.LastLogin;
         }
     }
 }
