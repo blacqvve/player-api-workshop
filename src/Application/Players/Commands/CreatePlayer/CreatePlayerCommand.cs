@@ -14,10 +14,12 @@ namespace Application.Players.Commands.CreatePlayer
      public class CreatePlayerCommandHandler : IRequestHandler<CreatePlayerCommand, Guid>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IDateTime _dateTime;
 
-        public CreatePlayerCommandHandler(IApplicationDbContext context)
+        public CreatePlayerCommandHandler(IApplicationDbContext context,IDateTime dateTime)
         {
             _context = context;
+            _dateTime = dateTime;
         }
 
         public async Task<Guid> Handle(CreatePlayerCommand request, CancellationToken cancellationToken)
@@ -25,6 +27,7 @@ namespace Application.Players.Commands.CreatePlayer
             var entity = new Player
             {
                 PlayerId = Guid.NewGuid(),
+                LastLogin = DateTime.Now,
                 Active = true
             };
 

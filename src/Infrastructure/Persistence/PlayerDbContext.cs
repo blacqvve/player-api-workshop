@@ -37,7 +37,10 @@ namespace Infrastructure.Persistence
             foreach (var entity in ChangeTracker.Entries<IHasCreateDate>())
             {
                 if(entity.State == EntityState.Added)
-                entity.Entity.CreateDate = _dateTime.Now;
+                {
+                    entity.Entity.CreateDate = _dateTime.Now;
+                }
+                
             }
             return base.SaveChangesAsync(cancellationToken);
         }
