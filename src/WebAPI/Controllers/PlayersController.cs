@@ -2,8 +2,13 @@ using Application.Players.Commands.CreatePlayer;
 using Application.Players.Commands.PlayerLogin;
 using Application.Players.Commands.AddFriend;
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Domain.Entities;
+using Player_API.Application.Players.Queries;
+using Player_API.Application.Players.Queries.GetPlayerFriend;
+using Player_API.Application.Players.Queries.GetPlayerFriends;
 
 namespace WebAPI.Controllers
 {
@@ -16,12 +21,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("PlayerLogin/{id}")]
-        public async Task<ActionResult> PlayerLogin([FromQuery] Guid id)
+        public async Task<ActionResult<DateTime>> PlayerLogin(Guid id)
         {
-            
-           var lastLogin =  await Mediator.Send(new PlayerLoginCommand{PlayerId = id});
-
-            return Ok(lastLogin);
+            return await Mediator.Send(new PlayerLoginCommand{PlayerId = id});
         }
         
         [HttpPost("AddFriend")]
@@ -31,6 +33,20 @@ namespace WebAPI.Controllers
             await Mediator.Send(request);
 
             return Ok();
+        }
+
+        [HttpGet("GetPlayerFriends/{id}")]
+
+        public async Task<ActionResult<List<FriendDto>>> GetPlayerFriends([FromQuery] Guid playerId)
+        {
+            return await Mediator.Send(new GetPlayerFriendsQuery {PlayerId = playerId});
+        }
+        
+        [HttpGet("GetPlayerFriend")]
+
+        public async Task<ActionResult<FriendDto>> GetPlayerFriend([FromBody] GetPlayerFriendQuery request)
+        {
+            return await Mediator.Send(request);
         }
     }
 }
