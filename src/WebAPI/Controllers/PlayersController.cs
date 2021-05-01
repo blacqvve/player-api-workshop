@@ -35,9 +35,9 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet("GetPlayerFriends/{id}")]
+        [HttpGet("GetPlayerFriends/{playerId}")]
 
-        public async Task<ActionResult<List<FriendDto>>> GetPlayerFriends([FromQuery] Guid playerId)
+        public async Task<ActionResult<List<FriendDto>>> GetPlayerFriends(Guid playerId)
         {
             return await Mediator.Send(new GetPlayerFriendsQuery {PlayerId = playerId});
         }
